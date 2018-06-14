@@ -1,5 +1,19 @@
 ---
 - hosts: localhost
   remote_user: root
+  vars:
+    primary: proxytest1
+    primary_ip: 192.168.1.2
+    backup: proxytest2
+    backup_ip: 192.168.1.3
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+    - name: Remove the .dockerenv file so GitLab Omnibus doesn't get confused.
+      file:
+        path: /.dockerenv
+        state: absent
   roles:
-    - AngelFreak.heartbeat
+    - role_under_test

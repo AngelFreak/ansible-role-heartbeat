@@ -2,8 +2,6 @@
 services: docker
 
 env:
-  - distro: centos7
-    playbook: test.yml
   - distro: ubuntu1604
     playbook: test.yml
   - distro: ubuntu1404

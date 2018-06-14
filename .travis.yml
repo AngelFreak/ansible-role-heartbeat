@@ -1,20 +1,24 @@
----
-language: python
-python: "2.7"
+------
+services: docker
 
-before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
-
-install:
-  # Install Ansible.
-  - pip install ansible
-  - ansible-galaxy install AngelFreak.heartbeat
-  # Add ansible.cfg to pick up roles path.
-  #- "printf '[defaults]\nroles_path = ../ansible' > ansible.cfg"
+env:
+  - distro: centos7
+    playbook: test.yml
+  - distro: ubuntu1604
+    playbook: test.yml
+  - distro: ubuntu1404
+    playbook: test.yml
+  - distro: debian9
+    playbook: test.yml
 
 script:
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
-  # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo"
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+
+  # Download test shim.
+  - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/geerlingguy/73ef1e5ee45d8694570f334be385e181/raw/
+  - chmod +x ${PWD}/tests/test.sh
+
+  # Run tests.
+  - ${PWD}/tests/test.sh

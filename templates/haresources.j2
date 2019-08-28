@@ -1,1 +1,13 @@
-proxyatest {{ heartbeat_sharedip }}
+{# allow choosing a different hostname than the one showing as primary node in ha.cf #}
+{% if heartbeat_preferred_host is defined %}
+{{ heartbeat_preferred_host }} {{ heartbeat_sharedip }}
+{% else %}
+{{ primary }} {{ heartbeat_sharedip }}
+{% endif %}
+
+{# additionnal resources from optionnal heartbeat_resources array #}
+{% if heartbeat_resources is defined %}
+{% for resource in heartbeat_resources %}
+  {{ resource }}
+{% endfor %}
+{% endif %}

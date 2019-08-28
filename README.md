@@ -27,6 +27,18 @@ The variables that can be passed to this role and a brief description about them
     interface: "enp0s8"                   # The network interface where heartbeat will be running on
     heartbeat_sharedip: "192.168.121.9"   # The shared ip for the heartbeat
 
+    The following variables are optional :
+
+    heartbeat_preferred_host:             # if wanting something different than the primary name
+    heartbeat_mcast_ip: "225.0.0.1"       # multicast ip address
+    auto_failback: "off|on|legacy"        # defaults to off
+    autojoin: "none|other|any"            # defaults to none
+    # array to add additional ressources.
+    # Each item is a complete line in the haresource file :
+    heartbeat_resources: [ 'linuxha1 192.168.85.3 httpd smb maid::vacuum',
+                           'linuxha1 192.168.85.3/27/192.168.85.16 httpd smb' ]
+
+
 Example Playbook
 ----------------
 

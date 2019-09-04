@@ -17,7 +17,7 @@ deadtime 10
 #
 udpport        694
 bcast {{ interface }}
-mcast {{ interface }} 225.0.0.1 694 1 0
+mcast {{ interface }} {{ heartbeat_mcast_ip or '225.0.0.1' }} 694 1 0
 ucast {{ interface }} {{ target }}
 #       What interfaces to heartbeat over?
 udp     {{ interface }}
@@ -30,3 +30,11 @@ logfacility     local0
 #       node    nodename ...    -- must match uname -n
 node    {{ primary }}
 node    {{ backup }}
+#
+# auto-failback mode
+# 
+auto_failback {{ heatbeat_auto_failback | default('off', true) }}
+#
+# autojoin mode
+#
+autojoin {{ heartbeat_autojoin | default('none', true) }}
